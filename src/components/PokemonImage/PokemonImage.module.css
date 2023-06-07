@@ -1,0 +1,9 @@
+.img {
+  width: 40%;
+  filter: brightness(0%);
+  image-rendering: pixelated;
+}
+
+.reveal {
+  filter: brightness(100%);
+}
