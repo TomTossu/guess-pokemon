@@ -1,9 +1,9 @@
 import React from 'react'
 
-function Button({ children }) {
+function Button({ children, type }) {
 
     return (
-        <button className="nes-btn is-primary"> {children} </button>
+        <button className={`nes-btn ${type}`} > {children} </ button>
     )
 }
 

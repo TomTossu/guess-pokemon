@@ -1,9 +1,19 @@
 .img {
-  width: 40%;
+  width: 30%;
   filter: brightness(0%);
   image-rendering: pixelated;
+  position: absolute;
+  top: 10vh;
+  right: 40vh;
 }
 
 .reveal {
   filter: brightness(100%);
+}
+
+.pokeball {
+  width: 4%;
+  position: absolute;
+  bottom: 45vh;
+  right: 70vh;
 }

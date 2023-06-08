@@ -6,7 +6,9 @@ import FormContainer from "./components/FormContainer/FormContainer";
 function App() {
   return (
     <GuessProvider>
-      <FormContainer />
+      <main className="bg">
+        <FormContainer />
+      </main>
     </GuessProvider>
   );
 }

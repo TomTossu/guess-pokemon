@@ -4,34 +4,48 @@ import data from "../../api";
 import PokemonImage from "../PokemonImage/PokemonImage";
 import GuessBox from "../GuessBox/GuessBox";
 import { GuessContext } from "../../providers/GuessProvider";
+import { fetchData, validateGuess } from "../../utils/utils";
+import Paragraph from "../Paragraph/Paragraph";
+
+import styles from './FormContainer.module.css'
 
 function FormContainer() {
     const [pokemon, setPokemon] = useState({});
-    const { guess } = useContext(GuessContext);
+    const [status, setStatus] = useState('idle')
     const [result, setResult] = useState(false);
 
+    const [correctCount, setCorrectCount] = useState(0);
+    const [mistakeCount, setMistakeCount] = useState(0);
+
+    const { guess, setGuess } = useContext(GuessContext);
+
     useEffect(() => {
-        async function fetchData() {
-            const response = await data.random();
+        const initialCorrect = localStorage.getItem("correct")
+        const initialMistake = localStorage.getItem("mistake")
 
-            setPokemon(response);
-        }
+        if (initialCorrect) setCorrectCount(initialCorrect)
+        if (initialMistake) setMistakeCount(initialMistake)
 
-        fetchData();
+        fetchData(data, setGuess, setResult, setPokemon, setStatus);
     }, []);
 
     return (
-        <form
+        <form className={styles.form}
             onSubmit={(e) => {
                 e.preventDefault();
-
-                if (guess?.toUpperCase() === pokemon?.name?.toUpperCase()) {
-                    setResult(true);
+                if (!result) validateGuess(guess, pokemon, setGuess, setResult, setCorrectCount, setMistakeCount);
+                if (result) {
+                    fetchData(data, setGuess, setResult, setPokemon, setStatus);
                 }
             }}
         >
-            <PokemonImage imgToShow={result} pokemon={pokemon} />
-            <GuessBox />
+            {status === 'success' && <PokemonImage imgToShow={result} pokemon={pokemon} />}
+            <div className={styles.countBox}>
+                <Paragraph type={"success"}>Correct Guesses {correctCount}</Paragraph>
+                <Paragraph type={"error"}>Wrong Guesses {mistakeCount}</Paragraph>
+            </div>
+
+            <GuessBox result={result} />
         </form>
     );
 }
